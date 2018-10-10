@@ -1,5 +1,6 @@
 set nocompatible
 filetype plugin indent on
+let python_highlight_all=1
 syntax on
 set hidden
 set relativenumber
@@ -10,6 +11,8 @@ set shiftwidth=4
 set expandtab
 set t_Co=256
 set noswapfile
+set splitright
+set foldlevel=99
 
 
 let $MYVIMRC="$HOME/.local/vimrc/.vimrc"
@@ -46,6 +49,15 @@ Plug 'vimwiki/vimwiki'
 
 " vimtex
 Plug 'lervag/vimtex'
+
+"Powershell support
+Plug 'PProvost/vim-ps1'
+
+" Pep8 highlighting for python
+Plug 'nvie/vim-flake8'
+
+" Jedi analysis for python
+Plug 'davidhalter/jedi-vim'
 call plug#end()
 
 colorscheme solarized
@@ -82,6 +94,9 @@ map <leader>tm :tabmove<cr>
 map <leader>tN :tabNext<cr>
 map <leader>tp :tabprevious<cr>
 
+" Enable folding with spacebar
+nnoremap <space> za
+
 " Search
 map <silent> <leader><cr> :noh<cr>
 
@@ -103,3 +118,30 @@ let g:tex_flavor = "latex"
 " Netrw configs
 let g:netrw_wiw = 20
 let g:netrw_usetab = 1
+
+" PEP 8 for python files
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=91 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set foldmethod=indent |
+    \ set encoding=utf-8
+
+" Syntastic python checkers
+let g:syntastic_python_checkers = ['mypy']
+
+let g:ycm_python_binary_path = 'python'
+" Make YCM and vim aware of virtualenv
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    exec(open(activate_this).read(), dict(__file__=activate_this))
+EOF
+
