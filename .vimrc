@@ -72,7 +72,7 @@ inoremap <c-u> <esc>gUiwi
 " Uppercase whole word in normal mode
 nnoremap <c-u> gUiw
 
-nnoremap <leader>ev :e $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 cnoremap w!! w !sudo tee > /dev/null %
 
 noremap <leader>so :w<cr>:so %<cr>
