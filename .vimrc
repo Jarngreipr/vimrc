@@ -68,51 +68,51 @@ let maplocalleader="<S-\\>"
 
 inoremap jk <Esc>
 " Uppercase whole word in insert mode
-imap <c-u> <esc>gUiwi
+inoremap <c-u> <esc>gUiwi
 " Uppercase whole word in normal mode
-nmap <c-u> gUiw
+nnoremap <c-u> gUiw
 
-nmap <leader>ev :e $MYVIMRC<cr>
-cmap w!! w !sudo tee > /dev/null %
+nnoremap <leader>ev :e $MYVIMRC<cr>
+cnoremap w!! w !sudo tee > /dev/null %
 
-map <leader>so :w<cr>:so %<cr>
+noremap <leader>so :w<cr>:so %<cr>
 
 " ctrlp keymaps
 nnoremap <silent> <C-f> :CtrlP<cr>
 
 " Window movement
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+noremap <C-j> <C-W>j
+noremap <C-k> <C-W>k
+noremap <C-h> <C-W>h
+noremap <C-l> <C-W>l
 
 " Disable scrolling
 inoremap <ScrollWheelUp> <Nop> 
 inoremap <ScrollWheelDown> <Nop> 
 
 " Tab mappings
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove<cr>
-map <leader>tN :tabNext<cr>
-map <leader>tp :tabprevious<cr>
+noremap <leader>tn :tabnew<cr>
+noremap <leader>to :tabonly<cr>
+noremap <leader>tc :tabclose<cr>
+noremap <leader>tm :tabmove<cr>
+noremap <leader>tN :tabNext<cr>
+noremap <leader>tp :tabprevious<cr>
 
 " Enable folding with spacebar
 nnoremap <space> za
 
 " Search
-map <silent> <leader><cr> :noh<cr>
+noremap <silent> <leader><cr> :noh<cr>
 
 " Rust development
 let g:rustfmt_autosave = 1
-map <leader>ct :!cargo test<cr>
+noremap <leader>ct :!cargo test<cr>
 let b:current_compiler = 'cargo'
 autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/
 autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 " YouCompleteMe keymaps
-map <leader>gD :YouCompleter GetDoc<cr>
+noremap <leader>gD :YouCompleter GetDoc<cr>
 
 " VimTEX configs
 let g:vimtex_view_method = 'zathura'
