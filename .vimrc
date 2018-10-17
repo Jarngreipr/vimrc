@@ -42,7 +42,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 
 " YouCompleteMe
-Plug 'valloric/YouCompleteMe'
+" Plug 'valloric/YouCompleteMe'
 
 " VimWiki
 Plug 'vimwiki/vimwiki'
@@ -67,6 +67,10 @@ let mapleader="\\"
 let maplocalleader="<S-\\>"
 
 inoremap jk <Esc>
+" Uppercase whole word in insert mode
+imap <c-u> <esc>gUiwi
+" Uppercase whole word in normal mode
+nmap <c-u> gUiw
 
 nmap <leader>ev :e $MYVIMRC<cr>
 cmap w!! w !sudo tee > /dev/null %
@@ -144,4 +148,3 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     exec(open(activate_this).read(), dict(__file__=activate_this))
 EOF
-
