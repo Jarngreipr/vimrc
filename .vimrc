@@ -15,7 +15,7 @@ set splitright
 set foldlevel=99
 
 
-let $MYVIMRC="$HOME/.local/vimrc/.vimrc"
+let $MYVIMRC="$HOME/.local/dotfiles/vimrc/.vimrc"
 
 " Plugins
 call plug#begin()
@@ -42,7 +42,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 
 " YouCompleteMe
-" Plug 'valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 
 " VimWiki
 Plug 'vimwiki/vimwiki'
@@ -58,13 +58,22 @@ Plug 'nvie/vim-flake8'
 
 " Jedi analysis for python
 Plug 'davidhalter/jedi-vim'
+
+" C programming
+Plug 'WolfgangMehner/vim-plugins'
 call plug#end()
 
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+let g:solarized_termcolors = 256
 colorscheme solarized
 
 " Keymaps
 let mapleader="\\"
 let maplocalleader="<S-\\>"
+
+" csupport
+let g:C_MapLeader = ','
 
 inoremap jk <Esc>
 " Uppercase whole word in insert mode
