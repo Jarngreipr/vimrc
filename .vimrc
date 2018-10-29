@@ -8,14 +8,26 @@ set number
 set background=dark
 set tabstop=4
 set shiftwidth=4
-set expandtab
+set softtabstop=4
+set noexpandtab
 set t_Co=256
 set noswapfile
 set splitright
 set foldlevel=99
+set exrc
+set secure
+set colorcolumn=110
+highlight ColorColumn ctermbg=darkgray
 
 
 let $MYVIMRC="$HOME/.local/dotfiles/vimrc/.vimrc"
+
+" Install vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 " Plugins
 call plug#begin()
@@ -40,6 +52,9 @@ Plug 'itchyny/lightline.vim'
 " Rust
 Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
+
+" C Programming
+Plug 'WolfgangMehner/vim-plugins'
 
 " YouCompleteMe
 Plug 'Valloric/YouCompleteMe'
@@ -157,3 +172,12 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     exec(open(activate_this).read(), dict(__file__=activate_this))
 EOF
+
+" C Development
+augroup project
+    autocmd!
+    autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
+
+" include path for header files
+let &path.="src/include,/usr/include/AL,repos/libsystem/,repos/machine,"
