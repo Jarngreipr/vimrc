@@ -8,14 +8,26 @@ set number
 set background=dark
 set tabstop=4
 set shiftwidth=4
-set expandtab
+set softtabstop=4
+set noexpandtab
 set t_Co=256
 set noswapfile
 set splitright
 set foldlevel=99
+set exrc
+set secure
+set colorcolumn=110
+highlight ColorColumn ctermbg=darkgray
 
 
 let $MYVIMRC="$HOME/.local/vimrc/.vimrc"
+
+" Install vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 " Plugins
 call plug#begin()
@@ -41,6 +53,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 
+" C Programming
+Plug 'WolfgangMehner/vim-plugins'
+
 " YouCompleteMe
 " Plug 'valloric/YouCompleteMe'
 
@@ -60,49 +75,9 @@ Plug 'nvie/vim-flake8'
 Plug 'davidhalter/jedi-vim'
 call plug#end()
 
+let g:solarized_termcolors=256
 colorscheme solarized
 
-" Keymaps
-let mapleader="\\"
-let maplocalleader="<S-\\>"
-
-inoremap jk <Esc>
-" Uppercase whole word in insert mode
-inoremap <c-u> <esc>gUiwi
-" Uppercase whole word in normal mode
-nnoremap <c-u> gUiw
-
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-cnoremap w!! w !sudo tee > /dev/null %
-
-noremap <leader>so :w<cr>:so %<cr>
-
-" ctrlp keymaps
-nnoremap <silent> <C-f> :CtrlP<cr>
-
-" Window movement
-noremap <C-j> <C-W>j
-noremap <C-k> <C-W>k
-noremap <C-h> <C-W>h
-noremap <C-l> <C-W>l
-
-" Disable scrolling
-inoremap <ScrollWheelUp> <Nop> 
-inoremap <ScrollWheelDown> <Nop> 
-
-" Tab mappings
-noremap <leader>tn :tabnew<cr>
-noremap <leader>to :tabonly<cr>
-noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove<cr>
-noremap <leader>tN :tabNext<cr>
-noremap <leader>tp :tabprevious<cr>
-
-" Enable folding with spacebar
-nnoremap <space> za
-
-" Search
-noremap <silent> <leader><cr> :noh<cr>
 
 " Rust development
 let g:rustfmt_autosave = 1
@@ -148,3 +123,56 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     exec(open(activate_this).read(), dict(__file__=activate_this))
 EOF
+
+" C Development
+augroup project
+    autocmd!
+    autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+augroup END
+	" csupport config
+let g:C_MapLeader = ','
+
+" include path for header files
+let &path.="src/include,/usr/include/AL,repos/libsystem/,repos/machine,"
+
+" Keymaps
+let mapleader="\\"
+let maplocalleader="<S-\\>"
+
+inoremap jk <Esc>
+" Uppercase whole word in insert mode
+inoremap <c-u> <esc>gUiwi
+" Uppercase whole word in normal mode
+nnoremap <c-u> gUiw
+
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+cnoremap w!! w !sudo tee > /dev/null %
+
+noremap <leader>so :w<cr>:so %<cr>
+
+" ctrlp keymaps
+nnoremap <silent> <C-f> :CtrlP<cr>
+
+" Window movement
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+
+" Disable scrolling
+inoremap <ScrollWheelUp> <Nop> 
+inoremap <ScrollWheelDown> <Nop> 
+
+" Tab mappings
+noremap <leader>tn :tabnew<cr>
+noremap <leader>to :tabonly<cr>
+noremap <leader>tc :tabclose<cr>
+noremap <leader>tm :tabmove<cr>
+noremap <leader>tN :tabNext<cr>
+noremap <leader>tp :tabprevious<cr>
+
+" Enable folding with spacebar
+nnoremap <space> za
+
+" Search
+noremap <silent> <leader><cr> :noh<cr>
