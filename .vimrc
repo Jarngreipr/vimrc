@@ -36,7 +36,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 
-" Plug 'justinmk/vim-sneak'
+Plug 'junegunn/fzf' , {'dir': '~/.fzf', 'do': './install --all'}
+Plug 'junegunn/fzf.vim'
 
 Plug 'ctrlpvim/ctrlp.vim', {'on': ['CtrlP', 'CtrlPMixed', 'CtrlPMRU']}
 
@@ -58,6 +59,7 @@ Plug 'WolfgangMehner/vim-plugins'
 
 " YouCompleteMe
 Plug 'Valloric/YouCompleteMe'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 " VimWiki
 Plug 'vimwiki/vimwiki'
@@ -102,7 +104,12 @@ cnoremap w!! w !sudo tee > /dev/null %
 noremap <leader>so :w<cr>:so %<cr>
 
 " ctrlp keymaps
-nnoremap <silent> <C-f> :CtrlP<cr>
+" nnoremap <silent> <C-f> :CtrlP<cr>
+
+" fzf keymaps
+nnoremap <silent> <C-f> :Files<cr>
+nnoremap <leader>f :Find 
+nnoremap <leader>fw :Find <C-R><C-W><CR>
 
 " Window movement
 noremap <C-j> <C-W>j
@@ -121,6 +128,7 @@ noremap <leader>tc :tabclose<cr>
 noremap <leader>tm :tabmove<cr>
 noremap <leader>tN :tabNext<cr>
 noremap <leader>tp :tabprevious<cr>
+noremap <leader>tom :tabnew<cr>:vsplit<cr><C-W>h:split<cr>
 
 " Enable folding with spacebar
 nnoremap <space> za
@@ -136,7 +144,17 @@ autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/
 autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 " YouCompleteMe keymaps
-noremap <leader>gD :YouCompleter GetDoc<cr>
+noremap <leader>gD :YcmCompleter GetDoc<cr>
+noremap <leader>gt :YcmCompleter GoTo<cr>
+noremap <leader>gd :YcmCompleter GoToDefinition<cr>
+noremap <leader>gtd :YcmCompleter GoToDeclaration<cr>
+noremap <leader>tt :YcmCompleter GetType<cr>
+noremap <leader>gp :YcmCompleter GetParent<cr>
+
+nnoremap <leader>y :let g:ycm_auto_trigger=0<CR>
+nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR>
+
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
 
 " VimTEX configs
 let g:vimtex_view_method = 'zathura'
@@ -178,6 +196,12 @@ augroup project
     autocmd!
     autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 augroup END
+" Enable Doxygen support in csupport
+let g:C_UseTool_doxygen = 'yes'
+" call mmtemplates#config#Add ( 'C', '$HOME/.vim/templates/doxygen.templates', 'Doxygen', 'ntd' )
 
 " include path for header files
 let &path.="src/include,/usr/include/AL,repos/libsystem/,repos/machine,"
+
+" fzf commands
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!./git*" --glob "!tags" --glob "!web/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
